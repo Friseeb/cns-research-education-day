@@ -33,9 +33,10 @@ class Command(BaseCommand):
         except FileNotFoundError:
             raise CommandError(f"File not found: {options['xlsx_path']}")
 
+        from datetime import date
         event, _ = Event.objects.get_or_create(
             name=options["event"],
-            defaults={"is_active": True},
+            defaults={"is_active": True, "date": date(2026, 5, 16)},
         )
         self.stdout.write(f"Event: {event.name}")
 
