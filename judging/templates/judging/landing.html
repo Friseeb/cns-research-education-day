@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}2026 CNS Research & Education Innovation Day{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ──────────────────────────────────────────── -->
+<section class="card card-accent" style="padding:2rem 1.8rem 1.6rem;">
+  <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+    <img src="{% static 'judging/schulich_logo.png' %}" alt="Schulich Medicine & Dentistry" style="height:56px;width:auto;">
+    <div style="flex:1;min-width:240px;">
+      <h2 style="margin:0 0 0.25rem;font-size:1.5rem;">2026 CNS Research &amp; Education Innovation Day</h2>
+      <p style="margin:0;color:var(--muted);font-size:0.92rem;">
+        Department of Clinical Neurological Sciences &nbsp;·&nbsp; Schulich School of Medicine &amp; Dentistry
+      </p>
+      <p style="margin:0.3rem 0 0;color:var(--muted);font-size:0.88rem;">
+        University Hospital, 339 Windermere Rd., C7-002 &nbsp;·&nbsp; London, ON N6A 5A5
+      </p>
+    </div>
+    <div style="text-align:right;flex-shrink:0;">
+      <img src="{% static 'judging/wu_logo.png' %}" alt="Western University" style="height:40px;width:auto;opacity:0.85;">
+    </div>
+  </div>
+</section>
+
+<!-- ── Agenda ─────────────────────────────────────────── -->
+<section class="card" style="padding:0;overflow:hidden;">
+  <div style="padding:1.1rem 1.4rem 0.7rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+    <h3 style="margin:0;font-size:1.1rem;">Day Agenda</h3>
+    <span style="font-size:0.82rem;color:var(--muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">2026</span>
+  </div>
+
+  <div class="agenda-table">
+
+    <div class="agenda-row agenda-break">
+      <div class="agenda-time">8:00 – 8:20 a.m.</div>
+      <div class="agenda-content">
+        <strong>Registration and Continental Breakfast</strong>
+      </div>
+      <div class="agenda-location">Garron/Spriet Lounge</div>
+    </div>
+
+    <div class="agenda-row">
+      <div class="agenda-time">8:25 – 8:35 a.m.</div>
+      <div class="agenda-content">
+        <strong>Opening Remarks</strong>
+        <p>Dr. David Steven, Richard and Beryl Ivey Chair,<br>Department of Clinical Neurological Sciences</p>
+      </div>
+      <div class="agenda-location">Kenny Theatre</div>
+    </div>
+
+    <div class="agenda-row agenda-keynote">
+      <div class="agenda-time">8:40 – 9:35 a.m.</div>
+      <div class="agenda-content">
+        <strong>Keynote Presentation</strong>
+        <p>
+          Dr. Christopher Watling<br>
+          <span style="color:var(--muted);font-size:0.88rem;">Chief Executive Officer, Royal College of Physicians and Surgeons of Canada &amp; Royal College Canada International</span>
+        </p>
+      </div>
+      <div class="agenda-location">Kenny Theatre</div>
+    </div>
+
+    <div class="agenda-row">
+      <div class="agenda-time">9:40 – 10:10 a.m.</div>
+      <div class="agenda-content">
+        <strong>Oral Presentation Session #1</strong>
+        <p>5-minute presentations · 3 minutes Q&amp;A each</p>
+      </div>
+      <div class="agenda-location">Kenny Theatre</div>
+    </div>
+
+    <div class="agenda-row agenda-break">
+      <div class="agenda-time">10:15 – 11:10 a.m.</div>
+      <div class="agenda-content">
+        <strong>Refreshment Break &amp; Parallel Poster Tours #1</strong>
+        <p>4-minute poster presentations</p>
+      </div>
+      <div class="agenda-location">Garron/Spriet Lounge</div>
+    </div>
+
+    <div class="agenda-row">
+      <div class="agenda-time">11:15 a.m. – 12:55 p.m.</div>
+      <div class="agenda-content">
+        <strong>Oral Presentation Session #2</strong>
+        <p>5-minute presentations · 3 minutes Q&amp;A each</p>
+      </div>
+      <div class="agenda-location">Kenny Theatre</div>
+    </div>
+
+    <div class="agenda-row agenda-break">
+      <div class="agenda-time">1:00 – 1:40 p.m.</div>
+      <div class="agenda-content">
+        <strong>Lunch</strong>
+      </div>
+      <div class="agenda-location">Garron/Spriet Lounge</div>
+    </div>
+
+    <div class="agenda-row">
+      <div class="agenda-time">1:45 – 3:14 p.m.</div>
+      <div class="agenda-content">
+        <strong>Oral Presentation Session #3</strong>
+        <p>5-minute presentations · 3 minutes Q&amp;A each</p>
+      </div>
+      <div class="agenda-location">Kenny Theatre</div>
+    </div>
+
+    <div class="agenda-row agenda-break">
+      <div class="agenda-time">3:20 – 4:15 p.m.</div>
+      <div class="agenda-content">
+        <strong>Refreshment Break &amp; Parallel Poster Tours #2</strong>
+        <p>4-minute poster presentations</p>
+      </div>
+      <div class="agenda-location">Garron/Spriet Lounge</div>
+    </div>
+
+    <div class="agenda-row agenda-closing">
+      <div class="agenda-time">4:20 – 4:30 p.m.</div>
+      <div class="agenda-content">
+        <strong>Closing Remarks and Awards</strong>
+      </div>
+      <div class="agenda-location">Kenny Theatre</div>
+    </div>
+
+  </div>
+
+  <p style="padding:0.75rem 1.4rem;margin:0;font-size:0.82rem;color:var(--muted);border-top:1px solid var(--border);font-style:italic;">
+    * During refreshment breaks, poster presenters will remain beside their poster board for presentations and discussion.
+  </p>
+</section>
+
+<!-- ── Judging portal callout ─────────────────────────── -->
+<section class="card" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:1.1rem 1.4rem;">
+  <div>
+    <h3 style="margin:0 0 0.2rem;">Judging Portal</h3>
+    <p style="margin:0;font-size:0.9rem;color:var(--muted);">Judges — use your unique link to score assigned submissions.</p>
+  </div>
+  <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+    <a class="button ghost" href="{% url 'admin:index' %}" style="font-size:0.85rem;">Organizer login</a>
+  </div>
+</section>
+
+<style>
+.agenda-table { display: flex; flex-direction: column; }
+
+.agenda-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 160px;
+  gap: 0.5rem 1rem;
+  padding: 0.85rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.agenda-row:last-child { border-bottom: 0; }
+
+.agenda-break { background: #f5f4f8; }
+.agenda-keynote { background: rgba(79,38,131,0.05); }
+.agenda-closing { background: rgba(79,38,131,0.05); }
+
+.agenda-time {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--purple);
+  white-space: nowrap;
+  padding-top: 0.1rem;
+  font-family: "Source Sans 3", Tahoma, sans-serif;
+}
+
+.agenda-content strong { display: block; font-size: 0.95rem; color: var(--deep); font-family: Georgia, serif; }
+.agenda-content p { margin: 0.2rem 0 0; font-size: 0.85rem; color: var(--muted); }
+
+.agenda-location {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--grey);
+  text-align: right;
+  padding-top: 0.15rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .agenda-row { grid-template-columns: 1fr; gap: 0.2rem; }
+  .agenda-location { text-align: left; color: var(--orchid); font-size: 0.8rem; }
+}
+</style>
+
+{% endblock %}

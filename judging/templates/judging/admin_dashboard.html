@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Organizer Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+{% if not event %}
+  <section class="card card-accent">
+    <p class="hint">No active event found. <a href="{% url 'admin:index' %}">Create one in the admin panel</a>.</p>
+  </section>
+{% else %}
+
+<section class="card card-accent">
+  <h2 style="margin-bottom:0.9rem;">{{ event.name }}</h2>
+  <div class="stats">
+    <div><span>{{ counts.submissions }}</span><small>Submissions</small></div>
+    <div><span>{{ counts.judges }}</span><small>Judges</small></div>
+    <div><span>{{ counts.assignments }}</span><small>Assignments</small></div>
+    <div><span>{{ counts.completed }}</span><small>Completed</small></div>
+    <div><span>{{ counts.missing }}</span><small>Pending</small></div>
+  </div>
+</section>
+
+<section class="card" style="padding:0;overflow:hidden;">
+  <div style="padding:1rem 1.4rem 0.6rem;display:flex;align-items:center;justify-content:space-between;">
+    <h3 style="margin:0;">Submissions</h3>
+    <a class="button" style="font-size:0.8rem;padding:0.35rem 0.8rem;" href="{% url 'judging:organizer_rankings' %}">Full rankings</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Title</th><th>Author</th><th>Category</th><th>Format</th><th>Assigned</th><th>Done</th><th>Raw mean</th><th>QR</th></tr>
+      </thead>
+      <tbody>
+      {% for row in submission_rows %}
+        <tr>
+          <td class="mono">{{ row.submission.abstract_number }}</td>
+          <td><strong>{{ row.submission.title }}</strong></td>
+          <td>{{ row.submission.presenting_author }}</td>
+          <td>{{ row.submission.category.name }}</td>
+          <td>{{ row.submission.presentation_format.name }}</td>
+          <td>{{ row.assigned_count }}</td>
+          <td>{{ row.completed_count }}</td>
+          <td>{% if row.current_raw_mean %}<strong>{{ row.current_raw_mean }}</strong>{% else %}<span class="hint">—</span>{% endif %}</td>
+          <td><a class="button ghost" style="font-size:0.75rem;padding:0.2rem 0.55rem;" href="{% url 'judging:submission_qr_image' row.submission.id %}" target="_blank" rel="noopener">QR</a></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="9" style="text-align:center;color:var(--muted);padding:2rem;">No submissions yet. <a href="{% url 'judging:organizer_imports' %}">Import CSV</a></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;">
+
+  <section class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:1rem 1.4rem 0.6rem;">
+      <h3 style="margin:0;">Judge progress</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Judge</th><th>Assigned</th><th>Done</th><th>Median</th><th>IQR</th><th>%</th></tr>
+        </thead>
+        <tbody>
+        {% for row in judge_rows %}
+          <tr>
+            <td>{{ row.judge.name }}</td>
+            <td>{{ row.assigned }}</td>
+            <td>{{ row.completed }}</td>
+            <td>{{ row.median_raw|floatformat:2 }}</td>
+            <td>{{ row.iqr_raw|floatformat:2 }}</td>
+            <td>{{ row.completion_pct }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:1.5rem;">No judges yet.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3 style="margin-top:0;">Recent scores</h3>
+    {% for assignment in submitted_assignments %}
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0.55rem 0;border-bottom:1px solid var(--border);">
+        <div>
+          <p style="margin:0;font-size:0.88rem;font-weight:600;">{{ assignment.judge.name }}</p>
+          <p style="margin:0;font-size:0.8rem;color:var(--muted);">#{{ assignment.submission.abstract_number }} · {{ assignment.submission.title|truncatechars:38 }}</p>
+          <p style="margin:0;font-size:0.75rem;color:var(--muted);">{{ assignment.completed_at|date:"M j, g:i a" }}</p>
+        </div>
+        <form method="post" action="{% url 'judging:reopen_assignment' assignment.id %}">
+          {% csrf_token %}
+          <button class="button ghost" style="font-size:0.75rem;padding:0.25rem 0.65rem;" type="submit"
+            onclick="return confirm('Reopen this score for editing?')">Reopen</button>
+        </form>
+      </div>
+    {% empty %}
+      <p class="hint">No submitted scores yet.</p>
+    {% endfor %}
+  </section>
+
+</div>
+{% endif %}
+{% endblock %}

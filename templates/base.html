@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CNS Research Day{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'judging/styles.css' %}?v=20260516f">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="{% url 'judging:landing' %}" class="header-logo-link">
+        <img src="{% static 'judging/schulich_logo_rev.png' %}" alt="Schulich Medicine &amp; Dentistry" class="wu-logo">
+      </a>
+      <div class="header-divider"></div>
+      <div class="header-text">
+        <span class="header-title">CNS Research &amp; Education Innovation Day</span>
+        <span class="header-sub">Department of Clinical Neurological Sciences &nbsp;·&nbsp; Western University</span>
+      </div>
+    </div>
+  </header>
+
+  {% block nav %}
+  <nav class="site-nav">
+    <div class="nav-inner">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'judging:organizer_dashboard' %}" class="nav-link {% block nav_dashboard %}{% endblock %}">Dashboard</a>
+        <a href="{% url 'judging:organizer_rankings' %}" class="nav-link {% block nav_rankings %}{% endblock %}">Rankings</a>
+        <a href="{% url 'judging:organizer_exports' %}" class="nav-link {% block nav_exports %}{% endblock %}">Exports</a>
+        <a href="{% url 'judging:organizer_imports' %}" class="nav-link {% block nav_imports %}{% endblock %}">Imports</a>
+        <span class="nav-spacer"></span>
+        <a href="{% url 'admin:index' %}" class="nav-link nav-admin" target="_blank">Admin ↗</a>
+      {% else %}
+        <span class="nav-hint">Organizer? <a href="{% url 'admin:index' %}">Log in via Admin</a></span>
+      {% endif %}
+    </div>
+  </nav>
+  {% endblock %}
+
+  <main class="wrap">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    CNS Research Day &nbsp;·&nbsp; Western University &nbsp;·&nbsp; London, Ontario
+  </footer>
+</body>
+</html>

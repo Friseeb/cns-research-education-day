@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Rankings{% endblock %}
+{% block nav_rankings %}active{% endblock %}
+
+{% block content %}
+{% if not event %}
+  <section class="card"><p class="hint">No active event found.</p></section>
+{% else %}
+  <section class="card card-accent">
+    <div class="section-heading">
+      <h2 style="margin:0;">{{ event.name }}</h2>
+    </div>
+    <form method="get" class="filters">
+      <label>Category
+        <select name="category">
+          <option value="">All categories</option>
+          {% for category in categories %}
+            <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Format
+        <select name="format">
+          <option value="">All formats</option>
+          {% for format in formats %}
+            <option value="{{ format.id }}" {% if selected_format == format.id %}selected{% endif %}>{{ format.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button class="button" type="submit">Apply filters</button>
+    </form>
+  </section>
+
+  <section class="card" style="padding:0;overflow:hidden;">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Abstract #</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Format</th>
+            <th>Adjusted</th>
+            <th>Raw</th>
+            <th>Judges</th>
+            <th>SD</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+          <tr>
+            <td class="rank-cell">{{ row.rank }}</td>
+            <td class="mono">{{ row.submission.abstract_number }}</td>
+            <td><strong>{{ row.submission.title }}</strong></td>
+            <td>{{ row.submission.presenting_author }}</td>
+            <td>{{ row.submission.category.name }}</td>
+            <td>{{ row.submission.presentation_format.name }}</td>
+            <td><strong>{{ row.final_adjusted_score|floatformat:3 }}</strong></td>
+            <td>{{ row.final_raw_score|floatformat:3 }}</td>
+            <td>{{ row.judges_completed }}</td>
+            <td>{{ row.score_sd|floatformat:3 }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="10" style="text-align:center;color:var(--muted);padding:2rem;">No completed scores for this filter.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endif %}
+{% endblock %}

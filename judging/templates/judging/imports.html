@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Organizer Imports{% endblock %}
+{% block nav_imports %}active{% endblock %}
+
+{% block content %}
+<section class="card card-accent">
+  <h2>CSV Imports</h2>
+  {% if not event %}
+    <p class="hint">No active event found.</p>
+  {% else %}
+    <p class="hint" style="margin-bottom:1.2rem;">Upload one file at a time. Expected columns are listed in the project brief.</p>
+
+    <div class="import-grid">
+      <form method="post" enctype="multipart/form-data" class="card nested-card">
+        {% csrf_token %}
+        <h3>Submissions</h3>
+        <input type="hidden" name="import_type" value="submissions">
+        {{ form.csv_file }}
+        <button class="button" type="submit">Import submissions</button>
+      </form>
+
+      <form method="post" enctype="multipart/form-data" class="card nested-card">
+        {% csrf_token %}
+        <h3>Judges</h3>
+        <input type="hidden" name="import_type" value="judges">
+        {{ form.csv_file }}
+        <button class="button" type="submit">Import judges</button>
+      </form>
+
+      <form method="post" enctype="multipart/form-data" class="card nested-card">
+        {% csrf_token %}
+        <h3>Assignments</h3>
+        <input type="hidden" name="import_type" value="assignments">
+        {{ form.csv_file }}
+        <button class="button" type="submit">Import assignments</button>
+      </form>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Judge Dashboard{% endblock %}
+
+{% block content %}
+<section class="card card-accent">
+  <div class="judge-info">
+    <div class="judge-avatar">{{ judge.name|slice:":1" }}</div>
+    <div>
+      <h2>{{ judge.name }}</h2>
+      <p>{{ judge.affiliation }}</p>
+    </div>
+  </div>
+
+  {% with total=assignments|length done=assignments|dictsort:"status"|last %}
+    {% if total %}
+      {% with submitted_count=0 %}
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width: {% widthratio assignments|length assignments|length 100 %}%"></div>
+          </div>
+          <p class="progress-label">{{ total }} submission{{ total|pluralize }} assigned</p>
+        </div>
+      {% endwith %}
+    {% endif %}
+  {% endwith %}
+</section>
+
+<section class="card">
+  <div class="section-heading">
+    <h3>Your assigned submissions</h3>
+  </div>
+  <div class="assignment-list">
+    {% for assignment in assignments %}
+      <article class="assignment-item {% if assignment.status == 'submitted' %}submitted{% elif assignment.status == 'draft' %}draft{% endif %}">
+        <div>
+          <p class="mono">#{{ assignment.submission.abstract_number }}</p>
+          <h4>{{ assignment.submission.title }}</h4>
+          <p>{{ assignment.submission.presenting_author }}</p>
+          <p>{{ assignment.submission.category.name }} &nbsp;·&nbsp; {{ assignment.submission.presentation_format.name }}</p>
+        </div>
+        <div class="actions">
+          <span class="badge badge-{{ assignment.status }}">{{ assignment.get_status_display }}</span>
+          <a class="button {% if assignment.status == 'submitted' %}ghost{% endif %}" href="{% url 'judging:score_submission' judge.token assignment.submission.id %}">
+            {% if assignment.status == 'submitted' %}View score{% else %}Open score form{% endif %}
+          </a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="hint">No assignments yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

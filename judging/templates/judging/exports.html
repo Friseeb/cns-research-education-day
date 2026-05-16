@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Exports{% endblock %}
+{% block nav_exports %}active{% endblock %}
+
+{% block content %}
+<section class="card card-accent">
+  <h2>Data Exports</h2>
+  {% if not event %}
+    <p class="hint">No active event found.</p>
+  {% else %}
+    <p class="hint" style="margin-bottom:1rem;">Download scoring data for the active event.</p>
+    <div class="export-links">
+      <a class="button" href="{% url 'judging:export_csv' 'raw' %}">Raw scores (.csv)</a>
+      <a class="button" href="{% url 'judging:export_csv' 'adjusted' %}">Adjusted rankings (.csv)</a>
+      <a class="button secondary" href="{% url 'judging:export_csv' 'adjusted_xlsx' %}">Adjusted rankings (.xlsx)</a>
+      <a class="button ghost" href="{% url 'judging:export_csv' 'judge_completion' %}">Judge completion (.csv)</a>
+      <a class="button ghost" href="{% url 'judging:export_csv' 'assignments' %}">Assignments (.csv)</a>
+    </div>
+    <p class="hint" style="margin-top:1rem;margin-bottom:0;">
+      Need to upload data? Use <a href="{% url 'judging:organizer_imports' %}">Organizer Imports</a>.
+    </p>
+  {% endif %}
+</section>
+{% endblock %}

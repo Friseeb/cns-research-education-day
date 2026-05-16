@@ -1,0 +1,134 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | CNS Research Day Admin{% endblock %}
+
+{% block branding %}
+<div style="display:flex;align-items:center;gap:12px;">
+  <img src="{% static 'judging/wu_logo_rev.png' %}" alt="Western University" style="height:36px;display:block;">
+  <div style="width:1px;height:28px;background:rgba(255,255,255,0.3);"></div>
+  <span style="font-size:1rem;font-weight:700;color:#fff;font-family:Georgia,serif;letter-spacing:0.01em;">
+    CNS Research Day
+  </span>
+</div>
+{% endblock %}
+
+{% block userlinks %}
+  <a href="/" style="color:rgba(255,255,255,0.8);">← Back to site</a>
+  &nbsp;|&nbsp;
+  {{ block.super }}
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  /* ── Western University Admin Theme ── */
+
+  /* Header */
+  #header {
+    background: linear-gradient(135deg, #201436 0%, #4F2683 100%);
+    border-bottom: 3px solid #8F55E0;
+    padding: 0 16px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+  #branding { display: flex; align-items: center; flex: 1; }
+  #user-tools { color: rgba(255,255,255,0.8); font-size: 0.82rem; }
+  #user-tools a:link, #user-tools a:visited { color: rgba(255,255,255,0.8); }
+  #user-tools a:hover { color: #fff; }
+  #logout-form button { color: rgba(255,255,255,0.8); background: none; border: none; cursor: pointer; font-size: inherit; padding: 0; }
+  #logout-form button:hover { color: #fff; }
+
+  /* Breadcrumbs */
+  div.breadcrumbs {
+    background: #4F2683;
+    color: rgba(255,255,255,0.8);
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+  div.breadcrumbs a { color: rgba(255,255,255,0.8); }
+  div.breadcrumbs a:hover { color: #fff; }
+  div.breadcrumbs > a:first-child::before { content: ""; }
+
+  /* Body / page */
+  body, html { background: #f5f5f5; }
+  #content-main, #content { background: #fff; }
+  #container { background: #f5f5f5; }
+
+  /* Module headers (app sections) */
+  .module h2, .module caption, .inline-group h2 {
+    background: #4F2683;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Links */
+  a:link, a:visited { color: #4F2683; }
+  a:hover { color: #8F55E0; }
+
+  /* Buttons */
+  .button, input[type=submit], input[type=button],
+  .submit-row input, a.button {
+    background: #4F2683;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 600;
+  }
+  .button:hover, input[type=submit]:hover, input[type=button]:hover { background: #6b3aab; color: #fff; }
+
+  .button.default, input[type=submit].default, .submit-row input.default {
+    background: #201436;
+    float: right;
+  }
+  .button.default:hover, input[type=submit].default:hover { background: #2d1d4a; color: #fff; }
+
+  /* Delete button */
+  .deletelink, .deletelink:link, .deletelink:visited { color: #201436; }
+  .submit-row a.deletelink { background: #818284; color: #fff; border-radius: 6px; }
+  .submit-row a.deletelink:hover { background: #201436; }
+
+  /* Dashboard app list */
+  .app-judging > table > tbody > tr > th a,
+  .app-auth > table > tbody > tr > th a { color: #4F2683; font-weight: 600; }
+
+  /* Selected rows */
+  tr.selected { background: rgba(79,38,131,0.08); }
+
+  /* Changeform save bar */
+  .submit-row { background: #f5f5f5; border-top: 1px solid #e0e0e0; }
+
+  /* Pagination */
+  .paginator a:link, .paginator a:visited { color: #4F2683; }
+  .paginator .this-page { color: #fff; background: #4F2683; border-radius: 4px; padding: 2px 8px; }
+
+  /* Search */
+  #toolbar { background: #f5f5f5; border-bottom: 1px solid #e0e0e0; }
+  #changelist-search input[type=text] { border: 1px solid #818284; border-radius: 4px; }
+  #changelist-search input[type=submit] { background: #4F2683; }
+
+  /* Object tools (Add button top right) */
+  .object-tools a:link, .object-tools a:visited { background: #4F2683; border-radius: 20px; }
+  .object-tools a:hover { background: #6b3aab; }
+
+  /* Sidebar nav */
+  #nav-sidebar { background: #fff; border-right: 1px solid #e0e0e0; }
+  #nav-sidebar .current-app .section:link,
+  #nav-sidebar .current-app .section:visited { color: #4F2683; font-weight: 700; }
+
+  /* Calendar widget */
+  .calendar caption, .calendarbox h2 { background: #4F2683; color: #fff; }
+  .calendar td.selected a { background: #4F2683; color: #fff; }
+  .calendar td.today a { color: #4F2683; font-weight: bold; }
+
+  /* Related widget */
+  .selector-chosen h2 { background: #4F2683; color: #fff; }
+  .selector-available h2 { background: #201436; color: #fff; }
+
+  /* Footer */
+  #footer { color: #818284; border-top: 1px solid #e0e0e0; padding: 8px 16px; font-size: 0.8rem; }
+  #footer::before { content: "CNS Research Day · Western University · London, Ontario"; }
+</style>
+{% endblock %}

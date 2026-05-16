@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Score — #{{ submission.abstract_number }}{% endblock %}
+
+{% block content %}
+<section class="card submission-header">
+  <p class="mono">#{{ submission.abstract_number }}</p>
+  <h2 style="margin: 0.2rem 0 0.6rem;">{{ submission.title }}</h2>
+  <div class="submission-meta">
+    <span><strong>Author:</strong> {{ submission.presenting_author }}</span>
+    <span><strong>Category:</strong> {{ submission.category.name }}</span>
+    <span><strong>Format:</strong> {{ submission.presentation_format.name }}</span>
+  </div>
+  {% if submission.poster_file %}
+    <p style="margin-top:0.75rem;margin-bottom:0">
+      <a class="button ghost" target="_blank" rel="noopener" href="{{ submission.poster_file.url }}" style="font-size:0.85rem;padding:0.4rem 0.85rem;">
+        View poster &rarr;
+      </a>
+    </p>
+  {% endif %}
+  <details style="margin-top:0.9rem;">
+    <summary>Read abstract</summary>
+    <p>{{ submission.abstract_text }}</p>
+  </details>
+</section>
+
+<form method="post" class="card card-accent">
+  {% csrf_token %}
+  <h3 style="margin-bottom:0.25rem;">{{ rubric.name }}</h3>
+  <p class="hint" style="margin-top:0;margin-bottom:0.5rem;">Score each criterion from 1 (poor) to 5 (excellent).</p>
+
+  {% for item, field in item_fields %}
+    <div class="rubric-item">
+      <p style="margin-bottom:0.15rem;"><strong>{{ item.label }}</strong></p>
+      <p class="hint" style="margin-top:0;margin-bottom:0.5rem;">{{ item.description }}</p>
+      <div class="radio-row">
+        {{ field }}
+      </div>
+      <div class="score-legend">
+        <span>1 — Poor</span>
+        <span>3 — Acceptable</span>
+        <span>5 — Excellent</span>
+      </div>
+      {% if field.errors %}
+        <p style="color:var(--danger);font-size:0.85rem;margin-top:0.3rem;">{{ field.errors|join:", " }}</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <div class="rubric-item">
+    <label for="id_comments">Comments <span class="hint" style="font-weight:400;">(optional)</span></label>
+    {{ form.comments }}
+  </div>
+
+  <div class="sticky-actions">
+    <button class="button secondary" type="submit" name="action" value="draft">Save draft</button>
+    <button class="button danger" type="submit" name="action" value="final"
+      onclick="return confirm('Submit final score? This locks your score unless an organizer reopens it.');">
+      Submit final score
+    </button>
+    <a href="javascript:history.back()" class="button ghost" style="margin-left:auto;">Back</a>
+  </div>
+</form>
+{% endblock %}
