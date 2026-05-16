@@ -6,7 +6,7 @@ databases:
 services:
 - name: web
   github:
-    repo: sfridman/cns-research-education-day
+    repo: Friseeb/cns-research-education-day
     branch: main
     deploy_on_push: true
   source_dir: /
