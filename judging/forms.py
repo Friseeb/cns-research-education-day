@@ -4,7 +4,7 @@ from django import forms
 class ScoreSubmissionForm(forms.Form):
     comments = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 4}))
 
-    def __init__(self, *args, rubric_items=None, **kwargs):
+    def __init__(self, *args, rubric_items=None, is_draft=False, **kwargs):
         super().__init__(*args, **kwargs)
         rubric_items = rubric_items or []
         for item in rubric_items:
@@ -12,7 +12,7 @@ class ScoreSubmissionForm(forms.Form):
             self.fields[f"item_{item.id}"] = forms.ChoiceField(
                 choices=choices,
                 widget=forms.RadioSelect,
-                required=True,
+                required=not is_draft,
                 label=item.label,
                 help_text=item.description,
             )

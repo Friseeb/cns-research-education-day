@@ -86,16 +86,18 @@ def score_submission(request, token, submission_id):
 		return HttpResponseForbidden("Score is locked. Organizer must reopen this assignment.")
 
 	if request.method == "POST":
-		form = ScoreSubmissionForm(request.POST, rubric_items=rubric_items)
+		action = request.POST.get("action", "draft")
+		is_final = action == "final"
+		form = ScoreSubmissionForm(request.POST, rubric_items=rubric_items, is_draft=not is_final)
 		if form.is_valid():
 			for item in rubric_items:
-				Score.objects.update_or_create(
-					assignment=assignment,
-					rubric_item=item,
-					defaults={"value": float(form.cleaned_data[f"item_{item.id}"])},
-				)
-			action = request.POST.get("action", "draft")
-			is_final = action == "final"
+				value = form.cleaned_data.get(f"item_{item.id}")
+				if value:
+					Score.objects.update_or_create(
+						assignment=assignment,
+						rubric_item=item,
+						defaults={"value": float(value)},
+					)
 			upsert_score_submission(
 				assignment=assignment,
 				comments=form.cleaned_data.get("comments", ""),
