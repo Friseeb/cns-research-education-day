@@ -160,7 +160,7 @@
 
 {% for section in sections %}
 <div class="section">
-  <div class="section-label">{{ section.format.name }}</div>
+  <div class="section-label">{{ section.label }}</div>
   <div class="awards-grid">
     {% for row in section.rows %}
       <div class="award-card award-{{ forloop.counter }}">
@@ -185,7 +185,14 @@
 
 <footer class="page-footer">
   <span>CNS Research &amp; Education Innovation Day 2026</span>
-  <a href="{% url 'judging:organizer_rankings' %}">← Back to rankings</a>
+  <div style="display:flex;gap:1rem;align-items:center;">
+    {% if group_by == "category" %}
+      <a href="?group=format">Group by format instead</a>
+    {% else %}
+      <a href="?group=category">Group by category instead</a>
+    {% endif %}
+    <a href="{% url 'judging:organizer_rankings' %}">← Back to rankings</a>
+  </div>
 </footer>
 
 </body>

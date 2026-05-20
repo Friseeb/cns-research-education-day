@@ -94,12 +94,12 @@ def rankings_for_event(event, category_id=None, format_id=None):
 
     adjusted_map = judge_adjusted_scores(event)
     grouped = defaultdict(list)
-    for assignment in assignments:
+    for assignment in assignments.select_related("judge"):
         key = assignment.submission_id
         entry = adjusted_map.get(assignment.id)
         if not entry:
             continue
-        grouped[key].append(entry)
+        grouped[key].append({**entry, "judge_name": assignment.judge.name})
 
     rows = []
     for submission_id, score_rows in grouped.items():
@@ -115,6 +115,10 @@ def rankings_for_event(event, category_id=None, format_id=None):
                 "final_adjusted_score": mean(adjusted_values),
                 "final_raw_score": mean(raw_values),
                 "judges_completed": len(raw_values),
+                "judge_scores": [
+                    {"name": r["judge_name"], "raw_mean": round(r["raw_mean"], 2)}
+                    for r in score_rows
+                ],
                 "score_sd": (
                     JudgeAssignment.objects.filter(
                         submission=submission,

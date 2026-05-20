@@ -84,7 +84,18 @@
           <td>{{ row.submission.category.name }}</td>
           <td>{{ row.submission.presentation_format.name }}</td>
           <td><strong>{{ row.final_adjusted_score|floatformat:3 }}</strong></td>
-          <td>{{ row.final_raw_score|floatformat:3 }}</td>
+          <td>
+            {% if row.judge_scores|length > 1 %}
+              <strong>{{ row.final_raw_score|floatformat:2 }}</strong>
+              <div class="judge-breakdown">
+                {% for js in row.judge_scores %}
+                  <span>{{ js.name|truncatechars:14 }}: {{ js.raw_mean }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ row.final_raw_score|floatformat:2 }}
+            {% endif %}
+          </td>
           <td>{{ row.judges_completed }}</td>
           <td>{{ row.score_sd|floatformat:3 }}</td>
         </tr>
@@ -126,6 +137,18 @@
 .rank-gold   { background: #fffbe6; }
 .rank-silver { background: #f8f8f8; }
 .rank-bronze { background: #fff8f0; }
+
+.judge-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 3px;
+}
+.judge-breakdown span {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
 </style>
 
 {% endblock %}

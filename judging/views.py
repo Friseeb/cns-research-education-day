@@ -214,19 +214,25 @@ def organizer_rankings_present(request):
 	if not event:
 		raise Http404("No active event.")
 
-	formats = PresentationFormat.objects.filter(
-		submissions__event=event
-	).distinct().order_by("name")
+	group_by = request.GET.get("group", "category")
 
 	sections = []
-	for fmt in formats:
-		rows = rankings_for_event(event, format_id=fmt.id)
-		if rows:
-			sections.append({"format": fmt, "rows": rows[:3]})
+	if group_by == "format":
+		items = PresentationFormat.objects.filter(submissions__event=event).distinct().order_by("name")
+		for fmt in items:
+			rows = rankings_for_event(event, format_id=fmt.id)
+			if rows:
+				sections.append({"label": fmt.name, "rows": rows[:3]})
+	else:
+		for cat in event.categories.all():
+			rows = rankings_for_event(event, category_id=cat.id)
+			if rows:
+				sections.append({"label": cat.name, "rows": rows[:3]})
 
 	return render(request, "judging/rankings_present.html", {
 		"event": event,
 		"sections": sections,
+		"group_by": group_by,
 	})
 
 
