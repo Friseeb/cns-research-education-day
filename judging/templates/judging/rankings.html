@@ -49,6 +49,7 @@
         <p class="podium-meta">{{ row.submission.category.name }} · {{ row.submission.presentation_format.name }}</p>
         <div class="podium-score">{{ row.final_adjusted_score|floatformat:2 }}<span style="font-size:0.55em;opacity:0.6;"> /5</span></div>
         <div class="podium-score-label">adjusted score</div>
+        <div style="margin-top:0.4rem;font-size:0.8rem;color:var(--muted);">raw {{ row.final_raw_score|floatformat:2 }} /5</div>
       </div>
     {% endfor %}
   </div>
