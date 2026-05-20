@@ -47,7 +47,7 @@
         <p class="podium-title">{{ row.submission.title }}</p>
         <p class="podium-author">{{ row.submission.presenting_author }}</p>
         <p class="podium-meta">{{ row.submission.category.name }} · {{ row.submission.presentation_format.name }}</p>
-        <div class="podium-score">{{ row.final_adjusted_score|floatformat:3 }}</div>
+        <div class="podium-score">{{ row.final_adjusted_score|floatformat:2 }}<span style="font-size:0.55em;opacity:0.6;"> /5</span></div>
         <div class="podium-score-label">adjusted score</div>
       </div>
     {% endfor %}
@@ -83,7 +83,7 @@
           <td>{{ row.submission.presenting_author }}</td>
           <td>{{ row.submission.category.name }}</td>
           <td>{{ row.submission.presentation_format.name }}</td>
-          <td><strong>{{ row.final_adjusted_score|floatformat:3 }}</strong></td>
+          <td><strong>{{ row.final_adjusted_score|floatformat:2 }}</strong><span style="color:var(--muted);font-size:0.8em;"> /5</span></td>
           <td>
             {% if row.judge_scores|length > 1 %}
               <strong>{{ row.final_raw_score|floatformat:2 }}</strong>

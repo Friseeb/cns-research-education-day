@@ -171,7 +171,7 @@
         <p class="award-title">{{ row.submission.title }}</p>
         <p class="award-author">{{ row.submission.presenting_author }}</p>
         <p class="award-meta">{{ row.submission.category.name }} · #{{ row.submission.abstract_number }}</p>
-        <div class="award-score">{{ row.final_adjusted_score|floatformat:3 }}</div>
+        <div class="award-score">{{ row.final_adjusted_score|floatformat:2 }}<span style="font-size:0.5em;opacity:0.55;"> /5</span></div>
         <div class="award-score-label">adjusted score · {{ row.judges_completed }} judge{{ row.judges_completed|pluralize }}</div>
       </div>
     {% empty %}

@@ -131,6 +131,16 @@ def rankings_for_event(event, category_id=None, format_id=None):
         )
 
     rows.sort(key=lambda r: (r["final_adjusted_score"], r["final_raw_score"]), reverse=True)
+
+    if rows:
+        min_adj = min(r["final_adjusted_score"] for r in rows)
+        max_adj = max(r["final_adjusted_score"] for r in rows)
+        span = max_adj - min_adj
+        for row in rows:
+            row["final_adjusted_score"] = (
+                1 + (row["final_adjusted_score"] - min_adj) / span * 4 if span > 0 else 3.0
+            )
+
     for idx, row in enumerate(rows, 1):
         row["rank"] = idx
     return rows
