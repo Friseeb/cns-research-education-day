@@ -8,7 +8,7 @@ import qrcode
 import qrcode.image.svg
 
 from .forms import CSVUploadForm, ScoreSubmissionForm
-from .models import Event, Judge, JudgeAssignment, Rubric, RubricItem, Score, Submission
+from .models import Event, Judge, JudgeAssignment, PresentationFormat, Rubric, RubricItem, Score, Submission
 from .services.exports import (
 	export_adjusted_rankings,
 	export_adjusted_rankings_xlsx,
@@ -206,6 +206,28 @@ def organizer_rankings(request):
 		"selected_format": int(format_id) if format_id and format_id.isdigit() else None,
 	}
 	return render(request, "judging/rankings.html", context)
+
+
+@login_required
+def organizer_rankings_present(request):
+	event = Event.objects.filter(is_active=True).order_by("-date").first()
+	if not event:
+		raise Http404("No active event.")
+
+	formats = PresentationFormat.objects.filter(
+		submissions__event=event
+	).distinct().order_by("name")
+
+	sections = []
+	for fmt in formats:
+		rows = rankings_for_event(event, format_id=fmt.id)
+		if rows:
+			sections.append({"format": fmt, "rows": rows[:3]})
+
+	return render(request, "judging/rankings_present.html", {
+		"event": event,
+		"sections": sections,
+	})
 
 
 @login_required

@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Awards — {{ event.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #4F2683;
+      --deep:   #201436;
+      --orchid: #8F55E0;
+      --vivid:  #FCF05E;
+      --tiger:  #F0A757;
+      --white:  #ffffff;
+    }
+
+    body {
+      font-family: "Source Sans 3", Tahoma, system-ui, sans-serif;
+      background: var(--deep);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 2.5rem 2rem 3rem;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .page-header img { height: 48px; width: auto; opacity: 0.9; }
+    .page-title { text-align: right; }
+    .page-title h1 { font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1.2; }
+    .page-title p  { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 0.2rem; }
+
+    .section { margin-bottom: 3rem; }
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orchid);
+      margin-bottom: 1rem;
+    }
+
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .award-card {
+      border-radius: 16px;
+      padding: 1.6rem 1.4rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .award-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      border: 2px solid transparent;
+    }
+
+    .award-1 { background: linear-gradient(135deg, #3a2800 0%, #2a1e00 100%); }
+    .award-1::before { border-color: #c9a200; }
+    .award-2 { background: linear-gradient(135deg, #252535 0%, #1a1a28 100%); }
+    .award-2::before { border-color: #909090; }
+    .award-3 { background: linear-gradient(135deg, #2e1a00 0%, #221400 100%); }
+    .award-3::before { border-color: #b06a00; }
+
+    .award-medal { font-size: 2.5rem; line-height: 1; margin-bottom: 0.7rem; }
+    .award-place {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .award-1 .award-place { color: var(--vivid); }
+    .award-2 .award-place { color: #c8c8c8; }
+    .award-3 .award-place { color: var(--tiger); }
+
+    .award-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+      font-family: Georgia, serif;
+    }
+    .award-author {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 0.2rem;
+    }
+    .award-meta {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1rem;
+    }
+    .award-score {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .award-1 .award-score { color: var(--vivid); }
+    .award-2 .award-score { color: #d0d0d0; }
+    .award-3 .award-score { color: var(--tiger); }
+    .award-score-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.35);
+      margin-top: 0.2rem;
+    }
+
+    .empty-note {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.9rem;
+      font-style: italic;
+      padding: 1rem 0;
+    }
+
+    .page-footer {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-footer span { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    .page-footer a { font-size: 0.78rem; color: var(--orchid); text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+
+    @media print, (min-width: 1200px) {
+      body { padding: 3rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <img src="{% static 'judging/schulich_logo_rev.png' %}" alt="Schulich Medicine & Dentistry">
+  <div class="page-title">
+    <h1>{{ event.name }}</h1>
+    <p>Department of Clinical Neurological Sciences &nbsp;·&nbsp; Western University</p>
+  </div>
+</header>
+
+{% for section in sections %}
+<div class="section">
+  <div class="section-label">{{ section.format.name }}</div>
+  <div class="awards-grid">
+    {% for row in section.rows %}
+      <div class="award-card award-{{ forloop.counter }}">
+        <div class="award-medal">{% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% else %}🥉{% endif %}</div>
+        <div class="award-place">
+          {% if forloop.counter == 1 %}First Place{% elif forloop.counter == 2 %}Second Place{% else %}Third Place{% endif %}
+        </div>
+        <p class="award-title">{{ row.submission.title }}</p>
+        <p class="award-author">{{ row.submission.presenting_author }}</p>
+        <p class="award-meta">{{ row.submission.category.name }} · #{{ row.submission.abstract_number }}</p>
+        <div class="award-score">{{ row.final_adjusted_score|floatformat:3 }}</div>
+        <div class="award-score-label">adjusted score · {{ row.judges_completed }} judge{{ row.judges_completed|pluralize }}</div>
+      </div>
+    {% empty %}
+      <p class="empty-note">No completed scores yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% empty %}
+<p class="empty-note">No results available yet.</p>
+{% endfor %}
+
+<footer class="page-footer">
+  <span>CNS Research &amp; Education Innovation Day 2026</span>
+  <a href="{% url 'judging:organizer_rankings' %}">← Back to rankings</a>
+</footer>
+
+</body>
+</html>
