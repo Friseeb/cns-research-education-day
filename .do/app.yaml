@@ -1,4 +1,9 @@
 name: cns-research-education-day
+domains:
+- domain: westerncnsday.org
+  type: PRIMARY
+- domain: www.westerncnsday.org
+  type: ALIAS
 databases:
 - name: db
   engine: PG
@@ -29,6 +34,6 @@ services:
     scope: RUN_TIME
     value: ${db.DATABASE_URL}
   - key: ALLOWED_HOSTS
-    value: ${APP_DOMAIN}
+    value: westerncnsday.org,www.westerncnsday.org,${APP_DOMAIN}
   - key: CSRF_TRUSTED_ORIGINS
-    value: https://${APP_DOMAIN}
+    value: https://westerncnsday.org,https://www.westerncnsday.org,https://${APP_DOMAIN}

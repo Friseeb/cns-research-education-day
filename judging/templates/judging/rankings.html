@@ -65,6 +65,7 @@
           <th>Abstract #</th>
           <th>Title</th>
           <th>Author</th>
+          <th>Training Level</th>
           <th>Category</th>
           <th>Format</th>
           <th>Adjusted</th>
@@ -82,6 +83,7 @@
           <td class="mono">{{ row.submission.abstract_number }}</td>
           <td><strong>{{ row.submission.title }}</strong></td>
           <td>{{ row.submission.presenting_author }}</td>
+          <td>{{ row.submission.get_training_level_display|default:"—" }}</td>
           <td>{{ row.submission.category.name }}</td>
           <td>{{ row.submission.presentation_format.name }}</td>
           <td><strong>{{ row.final_adjusted_score|floatformat:2 }}</strong><span style="color:var(--muted);font-size:0.8em;"> /5</span></td>
@@ -101,7 +103,7 @@
           <td>{{ row.score_sd|floatformat:3 }}</td>
         </tr>
       {% empty %}
-        <tr><td colspan="10" style="text-align:center;color:var(--muted);padding:2rem;">No completed scores for this filter.</td></tr>
+        <tr><td colspan="11" style="text-align:center;color:var(--muted);padding:2rem;">No completed scores for this filter.</td></tr>
       {% endfor %}
       </tbody>
     </table>

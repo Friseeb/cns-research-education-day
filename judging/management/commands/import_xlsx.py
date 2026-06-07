@@ -1,6 +1,7 @@
 import openpyxl
 from django.core.management.base import BaseCommand, CommandError
 from judging.models import Event, Category, PresentationFormat, Submission
+from judging.services.imports import _normalize_training_level
 
 CATEGORY_MAP = {
     "resident": "Resident",
@@ -93,6 +94,7 @@ class Command(BaseCommand):
                     "presenting_author": presenting_author,
                     "category": category,
                     "presentation_format": fmt,
+                    "training_level": _normalize_training_level(role_raw),
                     "location": location_full,
                     "is_active": True,
                 },

@@ -3,6 +3,38 @@ from io import StringIO
 
 from judging.models import Category, Judge, JudgeAssignment, PresentationFormat, Submission
 
+_TRAINING_ALIASES = {
+    "resident": "resident",
+    "fellow": "fellow",
+    "clinical fellow": "fellow",
+    "research fellow": "fellow",
+    "post-doc fellow": "fellow",
+    "post-doc": "fellow",
+    "postdoc": "fellow",
+    "post doc": "fellow",
+    "post-doctoral fellow": "fellow",
+    "postdoctoral fellow": "fellow",
+    "research associate": "fellow",
+    "research assistant": "fellow",
+    "student": "student",
+    "medical student": "student",
+    "undergraduate": "student",
+    "undergraduate student": "student",
+    "undergrad": "student",
+    "graduate": "student",
+    "graduate student": "student",
+    "master's student": "student",
+    "masters student": "student",
+    "msc": "student",
+    "phd": "student",
+    "phd student": "student",
+    "phd candidate": "student",
+}
+
+
+def _normalize_training_level(raw):
+    return _TRAINING_ALIASES.get(raw.strip().lower(), "")
+
 
 def _read_csv(uploaded_file):
     decoded = uploaded_file.read().decode("utf-8-sig")
@@ -29,6 +61,7 @@ def import_submissions(event, uploaded_file):
             "co_authors": (row.get("co_authors") or "").strip(),
             "category": category,
             "presentation_format": presentation_format,
+            "training_level": _normalize_training_level(row.get("training_level") or ""),
             "abstract_text": (row.get("abstract_text") or "").strip(),
             "location": (row.get("location") or "").strip(),
         }

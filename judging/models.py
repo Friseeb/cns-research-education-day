@@ -48,6 +48,15 @@ class PresentationFormat(models.Model):
 
 
 class Submission(TimeStampedModel):
+	TRAINING_RESIDENT = "resident"
+	TRAINING_FELLOW = "fellow"
+	TRAINING_STUDENT = "student"
+	TRAINING_CHOICES = [
+		(TRAINING_RESIDENT, "Resident"),
+		(TRAINING_FELLOW, "Clinical/Research/Post-doc Fellow"),
+		(TRAINING_STUDENT, "Medical Student/Undergraduate/Graduate"),
+	]
+
 	event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="submissions")
 	abstract_number = models.CharField(max_length=32)
 	title = models.CharField(max_length=300)
@@ -55,11 +64,13 @@ class Submission(TimeStampedModel):
 	co_authors = models.TextField(blank=True)
 	category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="submissions")
 	presentation_format = models.ForeignKey(PresentationFormat, on_delete=models.PROTECT, related_name="submissions")
+	training_level = models.CharField(max_length=20, choices=TRAINING_CHOICES, blank=True, default="")
 	abstract_text = models.TextField()
 	poster_file = models.FileField(upload_to="posters/", blank=True, null=True)
 	presentation_time = models.DateTimeField(blank=True, null=True)
 	location = models.CharField(max_length=255, blank=True)
 	is_active = models.BooleanField(default=True)
+	award_eligible = models.BooleanField(default=True)
 
 	class Meta:
 		ordering = ["abstract_number", "title"]

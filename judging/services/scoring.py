@@ -85,6 +85,7 @@ def rankings_for_event(event, category_id=None, format_id=None):
         event=event,
         status=JudgeAssignment.STATUS_SUBMITTED,
         score_submission__is_final=True,
+        submission__award_eligible=True,
     ).select_related("submission", "submission__category", "submission__presentation_format")
 
     if category_id:

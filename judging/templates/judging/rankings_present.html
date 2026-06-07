@@ -185,11 +185,16 @@
 
 <footer class="page-footer">
   <span>CNS Research &amp; Education Innovation Day 2026</span>
-  <div style="display:flex;gap:1rem;align-items:center;">
-    {% if group_by == "category" %}
-      <a href="?group=format">Group by format instead</a>
+  <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+    {% if group_by == "awards" %}
+      <a href="?group=category">Group by category</a>
+      <a href="?group=format">Group by format</a>
+    {% elif group_by == "category" %}
+      <a href="?group=awards">Award categories</a>
+      <a href="?group=format">Group by format</a>
     {% else %}
-      <a href="?group=category">Group by category instead</a>
+      <a href="?group=awards">Award categories</a>
+      <a href="?group=category">Group by category</a>
     {% endif %}
     <a href="{% url 'judging:organizer_rankings' %}">← Back to rankings</a>
   </div>

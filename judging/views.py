@@ -208,13 +208,20 @@ def organizer_rankings(request):
 	return render(request, "judging/rankings.html", context)
 
 
+_AWARD_GROUPS = [
+	("resident", "Residents", 2),
+	("fellow",   "Clinical/Research/Post-doc Fellows", 1),
+	("student",  "Medical Students/Undergraduate/Graduate", 1),
+]
+
+
 @login_required
 def organizer_rankings_present(request):
 	event = Event.objects.filter(is_active=True).order_by("-date").first()
 	if not event:
 		raise Http404("No active event.")
 
-	group_by = request.GET.get("group", "category")
+	group_by = request.GET.get("group", "awards")
 
 	sections = []
 	if group_by == "format":
@@ -223,11 +230,23 @@ def organizer_rankings_present(request):
 			rows = rankings_for_event(event, format_id=fmt.id)
 			if rows:
 				sections.append({"label": fmt.name, "rows": rows[:3]})
-	else:
+	elif group_by == "category":
 		for cat in event.categories.all():
 			rows = rankings_for_event(event, category_id=cat.id)
 			if rows:
 				sections.append({"label": cat.name, "rows": rows[:3]})
+	else:
+		# Default: group by format x training level (award categories)
+		formats = PresentationFormat.objects.filter(submissions__event=event).distinct().order_by("name")
+		for fmt in formats:
+			all_rows = rankings_for_event(event, format_id=fmt.id)
+			for level_key, level_label, top_n in _AWARD_GROUPS:
+				filtered = [r for r in all_rows if r["submission"].training_level == level_key]
+				if filtered:
+					sections.append({
+						"label": f"{fmt.name} — {level_label}",
+						"rows": filtered[:top_n],
+					})
 
 	return render(request, "judging/rankings_present.html", {
 		"event": event,

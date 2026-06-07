@@ -44,11 +44,13 @@ class SubmissionAdmin(admin.ModelAdmin):
 		"abstract_number",
 		"title",
 		"presenting_author",
+		"training_level",
 		"category",
 		"presentation_format",
+		"award_eligible",
 		"is_active",
 	)
-	list_filter = ("event", "category", "presentation_format", "is_active")
+	list_filter = ("event", "training_level", "award_eligible", "category", "presentation_format", "is_active")
 	search_fields = ("abstract_number", "title", "presenting_author")
 
 

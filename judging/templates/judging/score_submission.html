@@ -11,6 +11,12 @@
     <span><strong>Category:</strong> {{ submission.category.name }}</span>
     <span><strong>Format:</strong> {{ submission.presentation_format.name }}</span>
   </div>
+  {% if not submission.award_eligible %}
+  <div style="margin-top:0.85rem;padding:0.7rem 1rem;background:#fff8e1;border-left:4px solid #f0a000;border-radius:6px;font-size:0.92rem;">
+    <strong>Note:</strong> This presentation is being scored for feedback purposes only.
+    It is <strong>not eligible for award competition</strong> — the presenting author is not the original submitter.
+  </div>
+  {% endif %}
   {% if submission.poster_file %}
     <p style="margin-top:0.75rem;margin-bottom:0">
       <a class="button ghost" target="_blank" rel="noopener" href="{{ submission.poster_file.url }}" style="font-size:0.85rem;padding:0.4rem 0.85rem;">
