@@ -52,34 +52,59 @@
   </div>
 </section>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;">
+<section class="card" style="padding:1.1rem 1.4rem;">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+    <div>
+      <h3 style="margin:0 0 0.2rem;">Email actions</h3>
+      <p class="hint" style="margin:0;">Use SendGrid — requires SENDGRID_API_KEY and MAIL_FROM env vars.</p>
+    </div>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+      <form method="post" action="{% url 'judging:email_judges' %}" style="display:inline;">
+        {% csrf_token %}
+        <button class="button ghost" type="submit"
+          onclick="return confirm('Send portal invite emails to ALL active judges?')">
+          Email all judges
+        </button>
+      </form>
+      <form method="post" action="{% url 'judging:email_feedback' %}" style="display:inline;">
+        {% csrf_token %}
+        <button class="button ghost" type="submit"
+          onclick="return confirm('Send feedback emails to all presenters who have final scores and an email on file?')">
+          Email presenter feedback
+        </button>
+      </form>
+    </div>
+  </div>
 
-  <section class="card" style="padding:0;overflow:hidden;">
-    <div style="padding:1rem 1.4rem 0.6rem;">
-      <h3 style="margin:0;">Judge progress</h3>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Judge</th><th>Assigned</th><th>Done</th><th>Median</th><th>IQR</th><th>%</th></tr>
-        </thead>
-        <tbody>
-        {% for row in judge_rows %}
-          <tr>
-            <td>{{ row.judge.name }}</td>
-            <td>{{ row.assigned }}</td>
-            <td>{{ row.completed }}</td>
-            <td>{{ row.median_raw|floatformat:2 }}</td>
-            <td>{{ row.iqr_raw|floatformat:2 }}</td>
-            <td>{{ row.completion_pct }}</td>
-          </tr>
-        {% empty %}
-          <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:1.5rem;">No judges yet.</td></tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
+  <div style="margin-top:1rem;">
+    <table style="font-size:0.85rem;">
+      <thead>
+        <tr><th>Judge</th><th>Email</th><th>Assignments</th><th>Done</th><th style="width:90px;"></th></tr>
+      </thead>
+      <tbody>
+      {% for row in judge_rows %}
+        <tr>
+          <td>{{ row.judge.name }}</td>
+          <td class="mono" style="font-size:0.8rem;">{{ row.judge.email }}</td>
+          <td>{{ row.assigned }}</td>
+          <td>{{ row.completed }}</td>
+          <td>
+            <form method="post" action="{% url 'judging:email_judges' %}" style="display:inline;">
+              {% csrf_token %}
+              <input type="hidden" name="judge_id" value="{{ row.judge.id }}">
+              <button class="button ghost" style="font-size:0.75rem;padding:0.2rem 0.55rem;" type="submit">Re-send</button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1rem;">No judges yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;">
 
   <section class="card">
     <h3 style="margin-top:0;">Recent scores</h3>

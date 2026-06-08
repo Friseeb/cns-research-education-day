@@ -18,6 +18,7 @@ from .services.exports import (
 )
 from .services.imports import import_assignments, import_judges, import_submissions
 from .services.scoring import judge_metrics, rankings_for_event, upsert_score_submission
+from .services.email import send_judge_invite, send_judge_invites_bulk, send_feedback_bulk, send_presenter_feedback
 
 
 def landing_page(request):
@@ -307,6 +308,75 @@ def export_csv(request, export_type):
 	if export_type not in export_map:
 		raise Http404("Unknown export type.")
 	return export_map[export_type](event)
+
+
+@login_required
+def email_judges(request):
+    if request.method != "POST":
+        return HttpResponseForbidden("POST required.")
+    event = Event.objects.filter(is_active=True).order_by("-date").first()
+    if not event:
+        messages.error(request, "No active event.")
+        return redirect("judging:organizer_dashboard")
+
+    base_url = request.build_absolute_uri("/")
+    judge_id = request.POST.get("judge_id")
+
+    try:
+        if judge_id:
+            from .models import Judge
+            judge = get_object_or_404(Judge, id=judge_id, event=event)
+            send_judge_invite(judge, base_url)
+            messages.success(request, f"Invite sent to {judge.name} ({judge.email}).")
+        else:
+            sent, failed = send_judge_invites_bulk(event, base_url)
+            msg = f"Sent {sent} judge invite email(s)."
+            if failed:
+                msg += f" Failed: {'; '.join(failed)}"
+                messages.warning(request, msg)
+            else:
+                messages.success(request, msg)
+    except RuntimeError as exc:
+        messages.error(request, f"Email error: {exc}")
+
+    return redirect("judging:organizer_dashboard")
+
+
+@login_required
+def email_feedback(request):
+    if request.method != "POST":
+        return HttpResponseForbidden("POST required.")
+    event = Event.objects.filter(is_active=True).order_by("-date").first()
+    if not event:
+        messages.error(request, "No active event.")
+        return redirect("judging:organizer_dashboard")
+
+    base_url = request.build_absolute_uri("/")
+    submission_id = request.POST.get("submission_id")
+
+    try:
+        if submission_id:
+            submission = get_object_or_404(Submission, id=submission_id, event=event)
+            if not submission.presenting_author_email:
+                messages.error(request, f"No email on file for #{submission.abstract_number}.")
+            else:
+                result = send_presenter_feedback(submission, base_url)
+                if result:
+                    messages.success(request, f"Feedback sent to {submission.presenting_author}.")
+                else:
+                    messages.warning(request, f"#{submission.abstract_number} has no final scores yet.")
+        else:
+            sent, failed, skipped = send_feedback_bulk(event, base_url)
+            msg = f"Sent feedback to {sent} presenter(s). Skipped {skipped} (no email or no scores)."
+            if failed:
+                msg += f" Failed: {'; '.join(failed)}"
+                messages.warning(request, msg)
+            else:
+                messages.success(request, msg)
+    except RuntimeError as exc:
+        messages.error(request, f"Email error: {exc}")
+
+    return redirect("judging:organizer_dashboard")
 
 
 @login_required

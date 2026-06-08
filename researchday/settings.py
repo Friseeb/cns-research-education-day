@@ -121,6 +121,10 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 LOGIN_URL = "/admin/login/"
 
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", "")
+MAIL_FROM = os.getenv("MAIL_FROM", "")
+MAIL_FROM_NAME = os.getenv("MAIL_FROM_NAME", "CNS Research Day 2026")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

@@ -32,6 +32,14 @@ services:
   - key: DATABASE_URL
     scope: RUN_TIME
     value: ${db.DATABASE_URL}
+  - key: SENDGRID_API_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: ""
+  - key: MAIL_FROM
+    value: ""
+  - key: MAIL_FROM_NAME
+    value: "CNS Research Day 2026"
   - key: ALLOWED_HOSTS
     value: westerncnsday.org,www.westerncnsday.org,cns-research-education-day-disz7.ondigitalocean.app
   - key: CSRF_TRUSTED_ORIGINS

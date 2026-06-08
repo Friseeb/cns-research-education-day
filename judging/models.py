@@ -65,6 +65,7 @@ class Submission(TimeStampedModel):
 	category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="submissions")
 	presentation_format = models.ForeignKey(PresentationFormat, on_delete=models.PROTECT, related_name="submissions")
 	training_level = models.CharField(max_length=20, choices=TRAINING_CHOICES, blank=True, default="")
+	presenting_author_email = models.EmailField(blank=True, default="")
 	abstract_text = models.TextField()
 	poster_file = models.FileField(upload_to="posters/", blank=True, null=True)
 	presentation_time = models.DateTimeField(blank=True, null=True)

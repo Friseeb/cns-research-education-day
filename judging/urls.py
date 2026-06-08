@@ -21,4 +21,6 @@ urlpatterns = [
     path("organizer/exports/<str:export_type>/", views.export_csv, name="export_csv"),
     path("organizer/imports/", views.organizer_imports, name="organizer_imports"),
     path("organizer/assignment/<int:assignment_id>/reopen/", views.reopen_assignment, name="reopen_assignment"),
+    path("organizer/email/judges/", views.email_judges, name="email_judges"),
+    path("organizer/email/feedback/", views.email_feedback, name="email_feedback"),
 ]

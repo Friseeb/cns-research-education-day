@@ -44,6 +44,7 @@ class SubmissionAdmin(admin.ModelAdmin):
 		"abstract_number",
 		"title",
 		"presenting_author",
+		"presenting_author_email",
 		"training_level",
 		"category",
 		"presentation_format",
@@ -51,7 +52,7 @@ class SubmissionAdmin(admin.ModelAdmin):
 		"is_active",
 	)
 	list_filter = ("event", "training_level", "award_eligible", "category", "presentation_format", "is_active")
-	search_fields = ("abstract_number", "title", "presenting_author")
+	search_fields = ("abstract_number", "title", "presenting_author", "presenting_author_email")
 
 
 @admin.register(Judge)
