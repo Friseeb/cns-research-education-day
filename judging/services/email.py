@@ -2,9 +2,9 @@
 Email sending via SendGrid HTTP API.
 
 Required env vars:
-  SENDGRID_API_KEY  — from sendgrid.com (free tier: 100 emails/day)
-  MAIL_FROM         — verified sender address
-  MAIL_FROM_NAME    — display name (default: "CNS Research Day 2026")
+  SENDGRID_API_KEY  -- from sendgrid.com (free tier: 100 emails/day)
+  MAIL_FROM         -- verified sender address
+  MAIL_FROM_NAME    -- display name (default: "CNS Research Day 2026")
 """
 import json
 import urllib.request
@@ -54,10 +54,13 @@ def send_judge_invite(judge, base_url):
     judge_url = f"{base_url.rstrip('/')}/judge/{judge.token}/"
 
     # Summarise what this judge is scoring
-    assignments = list(
+    assignments = sorted(
         JudgeAssignment.objects.filter(judge=judge)
-        .select_related("submission", "submission__presentation_format")
-        .order_by("submission__abstract_number")
+        .select_related("submission", "submission__presentation_format"),
+        key=lambda a: (
+            0 if a.submission.abstract_number.startswith("PLAT") else 1,
+            int(a.submission.abstract_number.split("-")[1]),
+        ),
     )
     formats = {a.submission.presentation_format.name for a in assignments}
     is_oral = any("Oral" in f for f in formats)
@@ -66,26 +69,26 @@ def send_judge_invite(judge, base_url):
     if is_oral and not is_poster:
         session_desc = "oral platform presentations"
         rubric_items = [
-            "Scientific question — clarity, relevance, importance",
-            "Methods — design and analysis appropriateness",
-            "Results — clarity and completeness",
-            "Interpretation — conclusions supported by data",
-            "Slide quality — readability and organisation",
-            "Delivery — clarity and confidence",
-            "Timing — appropriate use of time",
-            "Response to questions — thoughtful answers",
+            "Scientific question: clarity, relevance, importance",
+            "Methods: design and analysis appropriateness",
+            "Results: clarity and completeness",
+            "Interpretation: conclusions supported by data",
+            "Slide quality: readability and organisation",
+            "Delivery: clarity and confidence",
+            "Timing: appropriate use of time",
+            "Response to questions: thoughtful answers",
             "Overall impression",
         ]
     elif is_poster and not is_oral:
         session_desc = "poster presentations"
         rubric_items = [
-            "Scientific question — clarity, relevance, importance",
-            "Methods — design and analysis appropriateness",
-            "Results — clarity and completeness",
-            "Interpretation — conclusions supported by data",
-            "Poster design — readability and organisation",
-            "Verbal explanation — clarity of presentation",
-            "Response to questions — thoughtful answers",
+            "Scientific question: clarity, relevance, importance",
+            "Methods: design and analysis appropriateness",
+            "Results: clarity and completeness",
+            "Interpretation: conclusions supported by data",
+            "Poster design: readability and organisation",
+            "Verbal explanation: clarity of presentation",
+            "Response to questions: thoughtful answers",
             "Overall impression",
         ]
     else:
@@ -97,7 +100,7 @@ def send_judge_invite(judge, base_url):
 
     n = len(assignments)
     assign_list_text = "\n".join(
-        f"  • {a.submission.abstract_number} — {a.submission.presenting_author}: {a.submission.title}"
+        f"  • {a.submission.abstract_number} - {a.submission.presenting_author}: {a.submission.title}"
         for a in assignments
     )
     assign_list_html = "".join(
@@ -111,7 +114,7 @@ def send_judge_invite(judge, base_url):
         f'<li style="margin-bottom:4px;">{item}</li>' for item in rubric_items
     )
 
-    subject = "CNS Research Day 2026 — Your Judging Portal"
+    subject = "CNS Research Day 2026 - Your Judging Portal"
 
     body_text = f"""Dear {first},
 
@@ -122,7 +125,7 @@ No login or password is required. Simply click your personal link on the day:
 
   {judge_url}
 
-This link is unique to you — please do not share it. It works on any phone, tablet, or laptop.
+This link is unique to you - please do not share it. It works on any phone, tablet, or laptop.
 
 YOUR ASSIGNMENTS ({n} {session_desc})
 {assign_list_text}
@@ -208,7 +211,7 @@ def send_presenter_feedback(submission, base_url):
     avg_score = round(sum(raw_scores) / len(raw_scores), 1) if raw_scores else None
 
     first = submission.presenting_author.split()[0] if submission.presenting_author else "Presenter"
-    subject = f"CNS Research Day 2026 — Judging Feedback for #{submission.abstract_number}"
+    subject = f"CNS Research Day 2026 - Judging Feedback for #{submission.abstract_number}"
 
     score_line = f"Average score: {avg_score} / 5" if avg_score else ""
 
@@ -222,7 +225,7 @@ def send_presenter_feedback(submission, base_url):
 Thank you for your presentation at the CNS Research & Education Innovation Day 2026.
 
 Below is the feedback from your judges for:
-#{submission.abstract_number} — {submission.title}
+#{submission.abstract_number} - {submission.title}
 
 {score_line}
 
@@ -246,7 +249,7 @@ CNS Research Day 2026 Organizing Committee
   <p>Thank you for your presentation at the <strong>CNS Research &amp; Education Innovation Day 2026</strong>.</p>
   <p>Below is the feedback from your judges for:</p>
   <div style="background:#f5f4f8;border-left:4px solid #4F2683;padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;">
-    <strong>#{submission.abstract_number}</strong> — {submission.title}
+    <strong>#{submission.abstract_number}</strong> - {submission.title}
     {"<br><span style='color:#4F2683;font-weight:600;margin-top:4px;display:block;'>" + score_line + "</span>" if score_line else ""}
   </div>
   <p><strong>Judge comments:</strong></p>
