@@ -1408,6 +1408,39 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(f"Rubric exists: {fmt.name}")
 
+        _PRESENTER_EMAILS = {
+            'PLAT-1': 'amirti.vivekanandan@lhsc.on.ca', 'PLAT-2': 'happy.inibhunu@lhsc.on.ca',
+            'PLAT-3': 'jalkharb@uwo.ca', 'PLAT-4': 'brendan.santyr@lhsc.on.ca',
+            'PLAT-5': 'sli2564@uwo.ca', 'PLAT-6': 'jthrowe3@uwo.ca',
+            'PLAT-7': 'cso53@uwo.ca', 'PLAT-8': 'mhuver@uwo.ca',
+            'PLAT-9': 'Fawaz.Alotaibi@lhsc.on.ca', 'PLAT-10': 'mohamad.abbass@lhsc.on.ca',
+            'PLAT-11': 'claudia.burbanodonoso@lhsc.on.ca', 'PLAT-12': 'Zainab.Alfares@lhsc.on.ca',
+            'PLAT-13': 'msharafk@uwo.ca', 'PLAT-14': 'aoremaki@uwo.ca',
+            'PLAT-15': 'dwong2022@meds.uwo.ca', 'PLAT-16': 'eduardo.sorianonavarro@lhsc.on.ca',
+            'PLAT-17': 'trevor.jairam@lhsc.on.ca', 'PLAT-18': 'kkim492@uwo.ca',
+            'PLAT-19': 'bdalal2027@meds.uwo.ca', 'PLAT-20': 'Carolina.Silveira@sjhc.london.on.ca',
+            'PLAT-21': 'ddiyabal@uwo.ca', 'PLAT-22': 'derek_george@urmc.rochester.edu',
+            'PLAT-23': 'rcouper2@uwo.ca', 'PLAT-24': 'ivan.castro@lhsc.on.ca',
+            'POST-1': 'robin.sawaya@lhsc.on.ca', 'POST-2': 'salotai5@uwo.ca',
+            'POST-3': 'Ryan.wang@lhsc.on.ca', 'POST-4': 'happy.inibhunu@lhsc.on.ca',
+            'POST-5': 'priscilla.chan@lhsc.on.ca', 'POST-6': 'dwong2022@meds.uwo.ca',
+            'POST-7': 'mohammad.alostad@lhsc.on.ca', 'POST-8': 'ranamoshref@gmail.com',
+            'POST-9': 'alexander.mastrolonardo@lhsc.on.ca',
+            # POST-10 email in xlsx was patricia.riccio@lhsc.on.ca (incorrect) — left blank
+            'POST-11': 'mli2534@uwo.ca', 'POST-12': 'Lakni.Abeyesekera@lhsc.on.ca',
+            'POST-13': 'cso53@uwo.ca', 'POST-14': 'aahma229@uwo.ca',
+            'POST-15': 'bdalal2027@meds.uwo.ca', 'POST-16': 'akeatin3@uwo.ca',
+            'POST-17': 'ajamshi3@uwo.ca', 'POST-18': 'shervin.pejhan@lhsc.on.ca',
+            'POST-19': 'Azhar.Alanazi@lhsc.on.ca', 'POST-20': 'Azhar.Alanazi@lhsc.on.ca',
+            'POST-21': 'kferrar3@uwo.ca', 'POST-22': 'nvalenc4@uwo.ca',
+            'POST-23': 'aavan2@uwo.ca', 'POST-24': 'waseem.yaghmoor@lhsc.on.ca',
+            'POST-25': 'Fawaz.Alotaibi@lhsc.on.ca', 'POST-26': 'eiredale@uwo.ca',
+            'POST-27': 'papadopoulos.syd@gmail.com', 'POST-28': 'ddiyabal@uwo.ca',
+            'POST-29': 'oananthakrishnan2028@meds.uwo.ca', 'POST-30': 'mahmed12028@meds.uwo.ca',
+            'POST-31': 'msharafk@uwo.ca', 'POST-32': 'kparikh2027@meds.uwo.ca',
+            'POST-33': 'shyarat@uwo.ca',
+        }
+
         # Submissions
         sub_created = sub_updated = 0
         for row in data["submissions"]:
@@ -1419,7 +1452,7 @@ class Command(BaseCommand):
                 defaults={
                     "title": row["title"],
                     "presenting_author": row["presenting_author"],
-                    "presenting_author_email": row.get("presenting_author_email", ""),
+                    "presenting_author_email": _PRESENTER_EMAILS.get(row["abstract_number"], ""),
                     "co_authors": row["co_authors"],
                     "category": cat,
                     "presentation_format": fmt,
