@@ -15,11 +15,10 @@ services:
     branch: main
     deploy_on_push: true
   source_dir: /
-  run_command: gunicorn researchday.wsgi:application
+  run_command: python manage.py migrate --noinput && gunicorn researchday.wsgi:application
   build_command: |
     pip install -r requirements.txt
     python manage.py collectstatic --noinput
-    python manage.py migrate
   environment_slug: python
   instance_size_slug: basic-xxs
   instance_count: 1
@@ -34,6 +33,6 @@ services:
     scope: RUN_TIME
     value: ${db.DATABASE_URL}
   - key: ALLOWED_HOSTS
-    value: westerncnsday.org,www.westerncnsday.org,${APP_DOMAIN}
+    value: westerncnsday.org,www.westerncnsday.org,cns-research-education-day-disz7.ondigitalocean.app
   - key: CSRF_TRUSTED_ORIGINS
-    value: https://westerncnsday.org,https://www.westerncnsday.org,https://${APP_DOMAIN}
+    value: https://westerncnsday.org,https://www.westerncnsday.org,https://cns-research-education-day-disz7.ondigitalocean.app
