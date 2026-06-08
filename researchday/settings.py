@@ -62,12 +62,8 @@ WSGI_APPLICATION = "researchday.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-_db = dj_database_url.config(
-    default=os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-    conn_max_age=600,
-)
-if _db.get("ENGINE") == "django.db.backends.postgresql":
-    _db.setdefault("OPTIONS", {})["options"] = "-c search_path=app,public"
+_db_url = os.getenv("DATABASE_URL") or f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+_db = dj_database_url.config(default=_db_url, conn_max_age=600)
 DATABASES = {"default": _db}
 
 

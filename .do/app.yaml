@@ -25,10 +25,6 @@ services:
     scope: RUN_TIME
     type: SECRET
     value: "cns-rday-2026-kv9wXp3nQmL8hTzJ4bRsYeAu7fCgDiNoPq"
-  - key: DATABASE_URL
-    scope: RUN_TIME
-    type: SECRET
-    value: ""
   - key: MAIL_FROM
     value: "sebastian.fridman@lhsc.on.ca"
   - key: MAIL_FROM_NAME
