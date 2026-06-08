@@ -4,10 +4,6 @@ domains:
   type: PRIMARY
 - domain: www.westerncnsday.org
   type: ALIAS
-databases:
-- name: db
-  engine: PG
-  production: false
 services:
 - name: web
   github:
@@ -31,7 +27,8 @@ services:
     value: "cns-rday-2026-kv9wXp3nQmL8hTzJ4bRsYeAu7fCgDiNoPq"
   - key: DATABASE_URL
     scope: RUN_TIME
-    value: ${db.DATABASE_URL}
+    type: SECRET
+    value: ""
   - key: MAIL_FROM
     value: "sebastian.fridman@lhsc.on.ca"
   - key: MAIL_FROM_NAME
