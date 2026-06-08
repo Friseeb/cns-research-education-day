@@ -7,7 +7,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-key")
+SECRET_KEY = os.getenv("SECRET_KEY") or "cns-rday-2026-fallback-kv9wXp3nQmL8hTzJ4bRsYeAu"
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if host.strip()]

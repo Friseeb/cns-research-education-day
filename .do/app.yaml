@@ -28,7 +28,7 @@ services:
   - key: SECRET_KEY
     scope: RUN_TIME
     type: SECRET
-    value: "U-X0BnC41QzX62fgDJii#D1&@Yro7*LY$*ZD1^5-PytU)-Z=vw"
+    value: "cns-rday-2026-kv9wXp3nQmL8hTzJ4bRsYeAu7fCgDiNoPq"
   - key: DATABASE_URL
     scope: RUN_TIME
     value: ${db.DATABASE_URL}
