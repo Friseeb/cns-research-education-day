@@ -1464,7 +1464,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Assignments: {a_created} created, {a_skipped} skipped")
 
         # Substitute presenters — not eligible for awards
-        non_competing = ["PLAT-5", "POST-1", "POST-15"]
+        non_competing = ["PLAT-6", "POST-1", "POST-17"]
         updated = Submission.objects.filter(event=event, abstract_number__in=non_competing).update(award_eligible=False)
         self.stdout.write(f"Marked {updated} submission(s) as not award-eligible: {', '.join(non_competing)}")
 
