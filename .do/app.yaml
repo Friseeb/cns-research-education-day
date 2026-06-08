@@ -32,10 +32,6 @@ services:
   - key: DATABASE_URL
     scope: RUN_TIME
     value: ${db.DATABASE_URL}
-  - key: SENDGRID_API_KEY
-    scope: RUN_TIME
-    type: SECRET
-    value: ""
   - key: MAIL_FROM
     value: "sebastian.fridman@lhsc.on.ca"
   - key: MAIL_FROM_NAME
