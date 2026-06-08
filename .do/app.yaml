@@ -37,7 +37,7 @@ services:
     type: SECRET
     value: ""
   - key: MAIL_FROM
-    value: ""
+    value: "sebastian.fridman@lhsc.on.ca"
   - key: MAIL_FROM_NAME
     value: "CNS Research Day 2026"
   - key: ALLOWED_HOSTS
