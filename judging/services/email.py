@@ -131,7 +131,7 @@ YOUR ASSIGNMENTS ({n} {session_desc})
 {assign_list_text}
 
 SCORING
-Each presentation is scored on {len(rubric_items)} criteria, each rated 1–5:
+Each presentation is scored on {len(rubric_items)} criteria, each rated 1-5:
 
 {rubric_text}
 
@@ -169,7 +169,7 @@ CNS Research Day 2026 Organizing Committee
   <h3 style="color:#4F2683;margin:24px 0 8px;">Your assignments &mdash; {n} {session_desc}</h3>
   <ol style="padding-left:1.2rem;margin:0 0 8px;">{assign_list_html}</ol>
 
-  <h3 style="color:#4F2683;margin:24px 0 8px;">Scoring criteria (each rated 1–5)</h3>
+  <h3 style="color:#4F2683;margin:24px 0 8px;">Scoring criteria (each rated 1-5)</h3>
   <ol style="padding-left:1.2rem;margin:0 0 8px;">{rubric_html}</ol>
 
   <h3 style="color:#4F2683;margin:24px 0 8px;">How it works</h3>
@@ -242,7 +242,7 @@ CNS Research Day 2026 Organizing Committee
     body_html = f"""<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#201436;">
 <div style="background:linear-gradient(135deg,#201436,#4F2683);padding:24px 32px;border-radius:8px 8px 0 0;">
   <p style="color:#fff;font-size:1.2rem;font-weight:700;margin:0;">CNS Research &amp; Education Innovation Day 2026</p>
-  <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin:4px 0 0;">Department of Clinical Neurological Sciences · Western University</p>
+  <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin:4px 0 0;">Department of Clinical Neurological Sciences, Western University</p>
 </div>
 <div style="background:#ffffff;padding:28px 32px;border:1px solid #dcdadf;border-top:0;border-radius:0 0 8px 8px;">
   <p>Dear {first},</p>
