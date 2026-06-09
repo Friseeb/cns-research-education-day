@@ -292,7 +292,7 @@ class Command(BaseCommand):
             'POST-5': 'mohammad.alostad@lhsc.on.ca',
             'POST-6': 'ranamoshref@gmail.com',
             'POST-7': 'alexander.mastrolonardo@lhsc.on.ca',
-            # POST-8 Sydney Cao: xlsx had supervisor email — left blank
+            'POST-8': 'scao262@uwo.ca',
             'POST-9': 'mli2534@uwo.ca',
             'POST-10': 'Lakni.Abeyesekera@lhsc.on.ca',
             'POST-11': 'cso53@uwo.ca',
